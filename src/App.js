@@ -1,24 +1,31 @@
-import logo from './logo.svg';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import './App.css';
+import PageReplacementSimulator from './components/PageReplacementSimulator';
+import LandingPage from './components/LandingPage';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <nav className="navbar">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Link to="/" className="nav-link">Home</Link>
+            <Link to="/simulator" className="nav-link">Page Replacement Simulator</Link>
+          </motion.div>
+        </nav>
+
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/simulator" element={<PageReplacementSimulator />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
