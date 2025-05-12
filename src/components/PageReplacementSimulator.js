@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import '../styles/PageReplacementSimulator.css';
 
@@ -8,6 +8,10 @@ const PageReplacementSimulator = () => {
   const [algorithm, setAlgorithm] = useState('fifo');
   const [simulationSteps, setSimulationSteps] = useState([]);
   const [pageFaults, setPageFaults] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [analysisData, setAnalysisData] = useState([]);
+  const simulationRef = useRef(null);
 
   const isValidInput = (refString, frames) => {
     const numbers = refString.split(',').map(num => parseInt(num.trim()));
@@ -135,6 +139,17 @@ const PageReplacementSimulator = () => {
     return result;
   };
 
+  const calculateAnalysisData = (steps) => {
+    return steps.map((step, index) => ({
+      step: index + 1,
+      page: step.page,
+      frames: [...step.frames],
+      fault: step.fault,
+      hit: !step.fault,
+      hitRate: ((index + 1 - steps.slice(0, index + 1).filter(s => s.fault).length) / (index + 1)) * 100
+    }));
+  };
+
   const handleSimulate = () => {
     const numbers = referenceString.split(',').map(num => parseInt(num.trim()));
     
@@ -160,9 +175,51 @@ const PageReplacementSimulator = () => {
 
       setSimulationSteps(result.steps);
       setPageFaults(result.pageFaults);
+      setAnalysisData(calculateAnalysisData(result.steps));
+      setCurrentStep(0);
+      setIsPlaying(false);
     } else {
       alert('Please enter valid input!');
     }
+  };
+
+  useEffect(() => {
+    let interval;
+    if (isPlaying && currentStep < simulationSteps.length - 1) {
+      interval = setInterval(() => {
+        setCurrentStep(prev => prev + 1);
+      }, 1000);
+    } else if (currentStep >= simulationSteps.length - 1) {
+      setIsPlaying(false);
+    }
+    return () => clearInterval(interval);
+  }, [isPlaying, currentStep, simulationSteps.length]);
+
+  useEffect(() => {
+    if (simulationRef.current) {
+      simulationRef.current.scrollTop = simulationRef.current.scrollHeight;
+    }
+  }, [currentStep]);
+
+  const handlePlayPause = () => {
+    setIsPlaying(!isPlaying);
+  };
+
+  const handleStepForward = () => {
+    if (currentStep < simulationSteps.length - 1) {
+      setCurrentStep(prev => prev + 1);
+    }
+  };
+
+  const handleStepBackward = () => {
+    if (currentStep > 0) {
+      setCurrentStep(prev => prev - 1);
+    }
+  };
+
+  const handleReset = () => {
+    setCurrentStep(0);
+    setIsPlaying(false);
   };
 
   return (
@@ -215,11 +272,42 @@ const PageReplacementSimulator = () => {
       </div>
 
       <div className="results-section">
-        <h2>Page Faults: {pageFaults}</h2>
-        
-        <div className="simulation-steps">
+        <div className="statistics-panel">
+          <h2>Statistics</h2>
+          <div className="stats-grid">
+            <div className="stat-item">
+              <h3>Page Faults</h3>
+              <p>{pageFaults}</p>
+            </div>
+            <div className="stat-item">
+              <h3>Hit Rate</h3>
+              <p>{((simulationSteps.length - pageFaults) / simulationSteps.length * 100).toFixed(2)}%</p>
+            </div>
+            <div className="stat-item">
+              <h3>Fault Rate</h3>
+              <p>{(pageFaults / simulationSteps.length * 100).toFixed(2)}%</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="simulation-controls">
+          <button onClick={handleReset} className="control-button">
+            Reset
+          </button>
+          <button onClick={handleStepBackward} className="control-button" disabled={currentStep === 0}>
+            Previous
+          </button>
+          <button onClick={handlePlayPause} className="control-button play-button">
+            {isPlaying ? 'Pause' : 'Play'}
+          </button>
+          <button onClick={handleStepForward} className="control-button" disabled={currentStep === simulationSteps.length - 1}>
+            Next
+          </button>
+        </div>
+
+        <div className="simulation-view" ref={simulationRef}>
           <AnimatePresence>
-            {simulationSteps.map((step, index) => (
+            {simulationSteps.slice(0, currentStep + 1).map((step, index) => (
               <motion.div
                 key={index}
                 className="step"
@@ -245,6 +333,32 @@ const PageReplacementSimulator = () => {
               </motion.div>
             ))}
           </AnimatePresence>
+        </div>
+
+        <div className="analysis-table">
+          <h2>Detailed Analysis</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Step</th>
+                <th>Page</th>
+                <th>Frames</th>
+                <th>Status</th>
+                <th>Hit Rate</th>
+              </tr>
+            </thead>
+            <tbody>
+              {analysisData.map((data, index) => (
+                <tr key={index} className={data.fault ? 'fault-row' : 'hit-row'}>
+                  <td>{data.step}</td>
+                  <td>{data.page}</td>
+                  <td>{data.frames.join(', ')}</td>
+                  <td>{data.fault ? 'Fault' : 'Hit'}</td>
+                  <td>{data.hitRate.toFixed(2)}%</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </motion.div>
