@@ -1,74 +1,84 @@
-<<<<<<< HEAD
-# Getting Started with Create React App
+# 🧠 OS Page Replacement Simulator
+### A High-Performance Visualizer for Operating System Memory Management
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white)](https://www.framer.com/motion/)
+[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
 
-## Available Scripts
+**Page Replacement Simulator** is a sophisticated educational tool designed to demystify how Operating Systems manage physical memory. Built with **React** and **Framer Motion**, it provides an interactive, step-by-step visualization of complex paging algorithms, helping students and engineers understand memory hits, faults, and replacement strategies in real-time.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 🚀 Supported Algorithms
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### ⬅️ First-In, First-Out (FIFO)
+*   **Logic**: Replaces the oldest page in memory.
+*   **Visualization**: Clear tracking of the arrival queue and replacement markers.
+*   **Analysis**: Demonstrates Belady's Anomaly and simple queue-based management.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 🕒 Least Recently Used (LRU)
+*   **Logic**: Replaces the page that has not been used for the longest period of time.
+*   **Visualization**: Real-time "recency" counters and stack-based replacement logic.
+*   **Analysis**: Shows how temporal locality is leveraged for better hit rates.
 
-### `npm test`
+### 🎯 Optimal Algorithm (OPT/MIN)
+*   **Logic**: Replaces the page that will not be used for the farthest period in the future.
+*   **Visualization**: Look-ahead logic highlighting why this algorithm achieves the lowest possible page fault rate.
+*   **Analysis**: Used as a theoretical benchmark for evaluating FIFO and LRU efficiency.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## 🎨 Interactive Capabilities
+*   **Step-by-Step Playback**: Play, pause, and manually step through the reference string to analyze every state change.
+*   **Dynamic Configuration**: Change the number of frames (1-10) and input custom reference strings on-the-fly.
+*   **Real-Time Analytics**: Live calculation of **Page Faults**, **Hit Rate**, and **Fault Percentage** with professional-grade charts.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🛠️ Technology Stack
+*   **Frontend Core**: React 18 (State-driven simulation engine)
+*   **Animations**: Framer Motion (Smooth layout transitions and entry/exit effects)
+*   **Styling**: Custom CSS Modules with modern layout patterns
+*   **State**: Hooks-based architecture for atomic simulation updates
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## ⚡ Performance Engineering
+*   **Memoized Simulations**: Page replacement logic is decoupled from rendering to ensure buttery-smooth performance even with long reference strings.
+*   **Infinite Scrolback**: The simulation view maintains a complete history of states, optimized for minimal DOM overhead as the simulation progresses.
+*   **Validated Inputs**: Robust error handling for malformed reference strings and out-of-bounds frame counts.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 📦 Quick Start
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/NKcoder5/page_algorithm_simulator.git
+   cd page_algorithm_simulator
+   ```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
 
-## Learn More
+3. **Start the simulator**:
+   ```bash
+   npm start
+   ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+4. **Access the Tool**:
+   *   Open `http://localhost:3000` in your browser.
+   *   Enter a reference string like `1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5`.
+   *   Select an algorithm and click **Simulate**.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## 📄 License
+Licensed under the **MIT License**.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-=======
-# page_algorithm_simulator
->>>>>>> 94807fb8ef704bf163747ec9ac78c81de552818f
+---
+*Created with ❤️ for Advanced Operating System Education.*
